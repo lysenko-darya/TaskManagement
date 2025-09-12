@@ -7,11 +7,11 @@ internal class UpdateTaskCommandHandler(ITaskRepository taskRepository,
                                      ILogger<UpdateTaskCommandHandler> logger,
                                      IAuthenticationService authenticationService) : IRequestHandler<UpdateTaskCommand, bool>
 {
-    private readonly ITaskRepository _taskRepository = taskRepository 
+    private readonly ITaskRepository _taskRepository = taskRepository
         ?? throw new ArgumentNullException(nameof(taskRepository));
-    private readonly IAuthenticationService _authenticationService = authenticationService 
+    private readonly IAuthenticationService _authenticationService = authenticationService
         ?? throw new ArgumentNullException(nameof(authenticationService));
-    private readonly ILogger<UpdateTaskCommandHandler> _logger = logger 
+    private readonly ILogger<UpdateTaskCommandHandler> _logger = logger
         ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task<bool> Handle(UpdateTaskCommand message, CancellationToken cancellationToken)

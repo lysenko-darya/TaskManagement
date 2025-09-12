@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using TaskManagement.Api.Application.Models;
 using TaskManagement.Contracts.Enums;
-using TaskManagement.Domain.Entities;
 
 namespace TaskManagement.Api.Application.Commands;
 

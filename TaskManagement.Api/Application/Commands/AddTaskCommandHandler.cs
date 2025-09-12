@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using TaskManagement.Domain.Abstractions;
 using TaskManagement.Domain.Entities;
 

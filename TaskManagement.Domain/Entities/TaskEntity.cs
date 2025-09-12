@@ -42,9 +42,9 @@ public class TaskEntity
         Status = newStatus;
     }
 
-    public void SetPriority(Priority? newPriority) 
-    { 
-        Priority = newPriority; 
+    public void SetPriority(Priority? newPriority)
+    {
+        Priority = newPriority;
     }
 
     public void SetExecutor(string? executor)

@@ -1,16 +1,5 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManagement.Domain.Abstractions;
-using TaskManagement.Domain.Entities;
 
 namespace TaskManagement.Api.Application.Commands;
 internal class LoginCommandHandler(IAuthenticationService authenticationService,
