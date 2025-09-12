@@ -4,7 +4,7 @@ using TaskManagement.Domain.Entities;
 
 namespace TaskManagement.Infrastructure.DbContexts;
 
-internal class TaskManagementDbContext : DbContext
+public class TaskManagementDbContext : DbContext
 {
     public DbSet<TaskEntity> Tasks { get; set; }
 

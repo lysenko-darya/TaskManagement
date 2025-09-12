@@ -10,15 +10,15 @@ public class TaskEntity
     public Status Status { get; private set; }
     public Priority? Priority { get; private set; }
 
-    //private readonly List<TaskEntity> _subTasks = null!;
-    //public IReadOnlyCollection<TaskEntity> SubTasks => _subTasks;
+    private readonly List<TaskEntity> _subTasks = null!;
+    public IReadOnlyCollection<TaskEntity> SubTasks => _subTasks;
 
     //private readonly List<TaskEntity> _relatedTasks = null!;
     //public IReadOnlyCollection<TaskEntity> RelatedTasks => _relatedTasks;
 
     protected TaskEntity()
     {
-        //_subTasks = [];
+        _subTasks = [];
         //_relatedTasks = [];
     }
 
@@ -28,5 +28,27 @@ public class TaskEntity
         Executor = executor;
         Status = status ?? Status.New;
         Priority = priority;
+    }
+
+    public void AddSubTask(string author, string? executor = null, Status? status = null, Priority? priority = null)
+    {
+        var subTask = new TaskEntity(author, executor, status, priority);
+        _subTasks.Add(subTask);
+    }
+
+    public void SetStatus(Status newStatus)
+    {
+        //todo add logic
+        Status = newStatus;
+    }
+
+    public void SetPriority(Priority? newPriority) 
+    { 
+        Priority = newPriority; 
+    }
+
+    public void SetExecutor(string? executor)
+    {
+        Executor = executor;
     }
 }

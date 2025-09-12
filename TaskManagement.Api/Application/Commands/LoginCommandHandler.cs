@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using TaskManagement.Domain.Abstractions;
 using TaskManagement.Domain.Entities;
 
-namespace TaskManagement.Application.Commands;
+namespace TaskManagement.Api.Application.Commands;
 internal class LoginCommandHandler(IAuthenticationService authenticationService,
                                      ILogger<LoginCommandHandler> logger) : IRequestHandler<LoginCommand, string>
 {

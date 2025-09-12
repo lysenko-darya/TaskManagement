@@ -16,7 +16,14 @@ internal class TaskRepository(TaskManagementDbContext dbContext) : ITaskReposito
 
     public async Task<TaskEntity?> GetById(long taskId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
+        var task = await _dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
+        if (task != null)
+        {
+            await _dbContext.Entry(task)
+                .Collection(i => i.SubTasks).LoadAsync(cancellationToken);
+        }
+
+        return task;
     }
 
     public async Task Add(TaskEntity task, CancellationToken cancellationToken = default)

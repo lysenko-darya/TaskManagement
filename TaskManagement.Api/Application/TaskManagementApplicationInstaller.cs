@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using TaskManagement.Api.Application.Queries;
 
-namespace TaskManagement.Application;
+namespace TaskManagement.Api.Application;
 
-public static class TaskManagementApplicationInstaller
+static class TaskManagementApplicationInstaller
 {
     public static IServiceCollection RegisterApplication(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TaskManagementApplicationInstaller).Assembly));
+
+        services.AddScoped<ITaskQueries, TaskQueries>();
+
         return services;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Application.Settings;
+﻿namespace TaskManagement.Infrastructure.Settings;
 
 public record AuthSettings
 {

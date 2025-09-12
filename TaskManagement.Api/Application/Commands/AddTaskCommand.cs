@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TaskManagement.Contracts.Enums;
 
-namespace TaskManagement.Application.Commands;
+namespace TaskManagement.Api.Application.Commands;
 
 public record AddTaskCommand : IRequest<bool>
 {

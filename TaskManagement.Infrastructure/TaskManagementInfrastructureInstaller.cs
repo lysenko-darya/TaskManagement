@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using TaskManagement.Application.Settings;
 using TaskManagement.Domain.Abstractions;
 using TaskManagement.Infrastructure.DbContexts;
 using TaskManagement.Infrastructure.Repositories;
 using TaskManagement.Infrastructure.Services;
+using TaskManagement.Infrastructure.Settings;
 
 namespace TaskManagement.Infrastructure;
 
@@ -54,7 +55,7 @@ public static class TaskManagementInfrastructureInstaller
         var jwtOptions = new AuthSettings();
         configuration.GetSection(nameof(AuthSettings)).Bind(jwtOptions);
         var key = Encoding.UTF8.GetBytes(jwtOptions.Secret); // todo: change secret place
-        
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
             options =>
             {
@@ -118,4 +119,10 @@ public static class TaskManagementInfrastructureInstaller
         return services;
     }
 
+    public static async Task RunMigrations(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<TaskManagementDbContext>();
+        await context.Database.MigrateAsync();
+    }
 }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using TaskManagement.Domain.Abstractions;
 using TaskManagement.Domain.Entities;
 
-namespace TaskManagement.Application.Commands;
+namespace TaskManagement.Api.Application.Commands;
 internal class AddTaskCommandHandler(ITaskRepository taskRepository,
                                      ILogger<AddTaskCommandHandler> logger,
                                      IAuthenticationService authenticationService) : IRequestHandler<AddTaskCommand, bool>

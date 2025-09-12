@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TaskManagement.Application.Settings;
 using TaskManagement.Domain.Abstractions;
+using TaskManagement.Infrastructure.Settings;
 
 namespace TaskManagement.Infrastructure.Services;
 
