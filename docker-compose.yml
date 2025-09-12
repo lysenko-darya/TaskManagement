@@ -1,0 +1,30 @@
+services:
+  task-management-db:
+    image: postgres:17.5
+    container_name: task-management-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=TPmzSt8T
+      - POSTGRES_DB=task-management-db
+      - PGDATA=/data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - 5433:5432
+
+  taskmanagement.api:
+    image: ${DOCKER_REGISTRY-}taskmanagementapi
+    build:
+      context: .
+      dockerfile: TaskManagement.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DevelopmentDocker
+      - ASPNETCORE_URLS=http://+:5202
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=User ID=postgres;Password=TPmzSt8T;Host=task-management-db;Port=5432;Database=task-management-db
+    ports:
+      - 5202:5202
+    depends_on:
+      - task-management-db
+
+volumes:
+  postgres:
