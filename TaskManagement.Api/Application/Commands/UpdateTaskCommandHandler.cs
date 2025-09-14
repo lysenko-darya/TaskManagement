@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TaskManagement.Domain.Abstractions;
+using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Api.Application.Commands;
@@ -19,7 +20,8 @@ internal class UpdateTaskCommandHandler(ITaskRepository taskRepository,
     {
         var author = _authenticationService.GetSubjectFromUser() ?? throw new AccessDeniedException();
 
-        var task = await _taskRepository.GetById(message.Id, cancellationToken) ?? throw new NotFoundException();
+        var task = await _taskRepository.GetById(message.Id, cancellationToken)
+            ?? throw new NotFoundException(nameof(TaskEntity), message.Id);
 
         task.SetExecutor(message.Executor);
         task.SetStatus(message.Status);

@@ -4,16 +4,12 @@ using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Api.Application.Behaviors;
 
-public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class ValidatorBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators, ILogger<ValidatorBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger;
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public ValidatorBehavior(IEnumerable<IValidator<TRequest>> validators, ILogger<ValidatorBehavior<TRequest, TResponse>> logger)
-    {
-        _validators = validators;
-        _logger = logger;
-    }
+    private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger = logger
+        ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IEnumerable<IValidator<TRequest>> _validators = validators
+        ?? throw new ArgumentNullException(nameof(validators));
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -23,7 +19,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
             .Where(error => error != null)
             .ToList();
 
-        if (failures.Any())
+        if (failures.Count != 0)
         {
             _logger.LogWarning("Validation errors - Command: {@Command} - Errors: {@ValidationErrors}", request, failures);
 
@@ -31,6 +27,6 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
                 $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
         }
 
-        return await next();
+        return await next(cancellationToken);
     }
 }

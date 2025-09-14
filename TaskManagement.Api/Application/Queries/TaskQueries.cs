@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Exceptions;
 using TaskManagement.Infrastructure.DbContexts;
 
@@ -13,7 +14,7 @@ public class TaskQueries(TaskManagementDbContext dbContext) : ITaskQueries
             .Include(t => t.RelatedTasks)
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken)
-            ?? throw new NotFoundException();
+            ?? throw new NotFoundException(nameof(TaskEntity), id);
 
         return new TaskModel
         {

@@ -22,13 +22,13 @@ public class TasksController(IMediator mediator, ITaskQueries taskQueries) : Con
     /// <summary>
     /// Get task with subtasks
     /// </summary>
-    /// <param name="taskId"></param>
+    /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("{taskId}")]
-    public async Task<ActionResult<TaskModel>> GetById(long taskId, CancellationToken cancellationToken = default)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TaskModel>> GetById(long id, CancellationToken cancellationToken = default)
     {
-        return await _taskQueries.GetTask(taskId, cancellationToken);
+        return await _taskQueries.GetTask(id, cancellationToken);
     }
 
     /// <summary>
@@ -38,11 +38,10 @@ public class TasksController(IMediator mediator, ITaskQueries taskQueries) : Con
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult> Add(AddTaskCommand command, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<long>> Add(AddTaskCommand command, CancellationToken cancellationToken = default)
     {
-        var id = await _mediator.Send(command, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id });
+        return Ok(await _mediator.Send(command, cancellationToken));
     }
 
     /// <summary>

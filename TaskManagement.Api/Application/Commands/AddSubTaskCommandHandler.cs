@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TaskManagement.Domain.Abstractions;
+using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Api.Application.Commands;
@@ -19,7 +20,8 @@ internal class AddSubTaskCommandHandler(ITaskRepository taskRepository,
     {
         var author = _authenticationService.GetSubjectFromUser() ?? throw new AccessDeniedException();
 
-        var parentTask = await _taskRepository.GetById(message.ParentTaskId, cancellationToken) ?? throw new NotFoundException();
+        var parentTask = await _taskRepository.GetById(message.ParentTaskId, cancellationToken)
+            ?? throw new NotFoundException(nameof(TaskEntity), message.ParentTaskId);
 
         parentTask.AddSubTask(author, message.Executor, message.Status, message.Priority);
 

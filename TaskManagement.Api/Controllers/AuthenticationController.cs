@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using TaskManagement.Api.Application.Commands;
 
 namespace TaskManagement.Api.Controllers;
