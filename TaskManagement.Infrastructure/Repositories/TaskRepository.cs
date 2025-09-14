@@ -11,12 +11,10 @@ internal class TaskRepository(TaskManagementDbContext dbContext) : ITaskReposito
 
     public async Task<TaskEntity?> GetById(long taskId, CancellationToken cancellationToken = default)
     {
-        var task = await _dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
-        if (task != null)
-        {
-            await _dbContext.Entry(task)
-                .Collection(i => i.SubTasks).LoadAsync(cancellationToken);
-        }
+        var task = await _dbContext.Tasks
+            .Include(t => t.SubTasks)
+            .Include(t => t.RelatedTasks)
+            .FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
 
         return task;
     }
@@ -24,7 +22,7 @@ internal class TaskRepository(TaskManagementDbContext dbContext) : ITaskReposito
     public async Task Add(TaskEntity task, CancellationToken cancellationToken = default)
     {
         _dbContext.Tasks.Add(task);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+       await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Update(TaskEntity task, CancellationToken cancellationToken = default)

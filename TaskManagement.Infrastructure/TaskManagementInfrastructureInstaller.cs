@@ -21,7 +21,6 @@ public static class TaskManagementInfrastructureInstaller
         ArgumentNullException.ThrowIfNull(services, nameof(services));
 
         services.AddConfiguration(configuration);
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TaskManagementInfrastructureInstaller).Assembly));
         //services.RegisterValidators<RegistrationPlaceholder>();
 
         services.AddDbContext<TaskManagementDbContext>(options =>

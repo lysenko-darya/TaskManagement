@@ -11,6 +11,7 @@ public record TaskModel
     public Priority? Priority { get; init; }
 
     public IReadOnlyCollection<TaskSummaryModel> SubTasks { get; init; } = [];
+    public IReadOnlyCollection<TaskSummaryModel> RelatedTasks { get; init; } = [];
 }
 
 public record TaskSummaryModel

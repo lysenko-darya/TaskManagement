@@ -3,5 +3,4 @@
 public interface ITaskQueries
 {
     Task<TaskModel> GetTask(long id, CancellationToken cancellationToken = default);
-    Task<IEnumerable<TaskSummaryModel>> GetAllTasks(CancellationToken cancellationToken = default);
 }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TaskManagement.Domain.Abstractions;
+using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Api.Application.Commands;
 
@@ -16,23 +17,16 @@ internal class UpdateTaskCommandHandler(ITaskRepository taskRepository,
 
     public async Task<bool> Handle(UpdateTaskCommand message, CancellationToken cancellationToken)
     {
-        var author = _authenticationService.GetSubjectFromUser() ?? throw new ArgumentNullException(); //todo
+        var author = _authenticationService.GetSubjectFromUser() ?? throw new AccessDeniedException();
 
-        var task = await _taskRepository.GetById(message.Id, cancellationToken) ?? throw new KeyNotFoundException();
+        var task = await _taskRepository.GetById(message.Id, cancellationToken) ?? throw new NotFoundException();
 
         task.SetExecutor(message.Executor);
         task.SetStatus(message.Status);
         task.SetPriority(message.Priority);
 
-        foreach (var subTask in message.SubTasks)
-        {
-            if (!task.SubTasks.Any(t => t.Id == subTask.Id))
-            {
-                task.AddSubTask(subTask.Author, subTask.Executor, subTask.Status, subTask.Priority);
-            }
-        }
-
         await _taskRepository.Update(task, cancellationToken);
+        _logger.LogInformation("Task with Id: '{Id}' was updated", task.Id);
         return true;
     }
 }

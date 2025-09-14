@@ -1,4 +1,5 @@
 ﻿using TaskManagement.Contracts.Enums;
+using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Domain.Entities;
 
@@ -13,13 +14,13 @@ public class TaskEntity
     private readonly List<TaskEntity> _subTasks = null!;
     public IReadOnlyCollection<TaskEntity> SubTasks => _subTasks;
 
-    //private readonly List<TaskEntity> _relatedTasks = null!;
-    //public IReadOnlyCollection<TaskEntity> RelatedTasks => _relatedTasks;
+    private readonly List<TaskEntity> _relatedTasks = null!;
+    public IReadOnlyCollection<TaskEntity> RelatedTasks => _relatedTasks;
 
     protected TaskEntity()
     {
         _subTasks = [];
-        //_relatedTasks = [];
+        _relatedTasks = [];
     }
 
     public TaskEntity(string author, string? executor = null, Status? status = null, Priority? priority = null) : this()
@@ -36,9 +37,39 @@ public class TaskEntity
         _subTasks.Add(subTask);
     }
 
+    public void AddRelatedTask(TaskEntity relatedTask)
+    {
+        if (ExistsRelatedTask(relatedTask))
+        {
+            throw new DomainException($"The tasks are already linked.");
+        }
+        _relatedTasks.Add(relatedTask);
+    }
+
+    public void DeleteRelatedTask(TaskEntity relatedTask)
+    {
+        if (!ExistsRelatedTask(relatedTask))
+        {
+            throw new DomainException($"The tasks are not linked.");
+        }
+        _relatedTasks.Remove(relatedTask);
+    }
+
+    private bool ExistsRelatedTask(TaskEntity relatedTask)
+    {
+        return _relatedTasks.Any(t => t.Id == relatedTask.Id);
+    }
+
     public void SetStatus(Status newStatus)
     {
-        //todo add logic
+        if (Status == Status.Done)
+        {
+            StatusChangeException(newStatus);
+        }
+        if (Status == Status.InProgress && newStatus == Status.New)
+        {
+            StatusChangeException(newStatus);
+        }
         Status = newStatus;
     }
 
@@ -50,5 +81,10 @@ public class TaskEntity
     public void SetExecutor(string? executor)
     {
         Executor = executor;
+    }
+
+    private void StatusChangeException(Status newStatus)
+    {
+        throw new DomainException($"Is not possible to change the task status from {Status} to {newStatus}.");
     }
 }

@@ -34,24 +34,85 @@ public class TasksController(IMediator mediator, ITaskQueries taskQueries) : Con
     /// <summary>
     /// Add new task
     /// </summary>
-    /// <param name="task"></param>
+    /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<bool>> Add(AddTaskCommand task, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult> Add(AddTaskCommand command, CancellationToken cancellationToken = default)
     {
-        return await _mediator.Send(task, cancellationToken);
+        var id = await _mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id });
     }
 
     /// <summary>
-    /// 
+    /// Add new subtask to parent task
     /// </summary>
-    /// <param name="task"></param>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("add-subtask")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool>> AddSubTask(AddSubTaskCommand command, CancellationToken cancellationToken = default)
+    {
+        return await _mediator.Send(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Set tasks as related to each other
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("add-tasks-relation")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool>> AddTasksRelation(AddTasksRelationCommand command, CancellationToken cancellationToken = default)
+    {
+        return await _mediator.Send(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Unset tasks as related to each other
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("delete-tasks-relation")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool>> DeleteTasksRelation(DeleteTasksRelationCommand command, CancellationToken cancellationToken = default)
+    {
+        return await _mediator.Send(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Update task
+    /// </summary>
+    /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ActionResult<bool>> Update(UpdateTaskCommand task, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool>> Update(UpdateTaskCommand command, CancellationToken cancellationToken = default)
     {
-        return await _mediator.Send(task, cancellationToken);
+        return await _mediator.Send(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Delete task with subtasks
+    /// </summary>
+    /// <param name="taskId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpDelete("{taskId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool>> Delete(long taskId, CancellationToken cancellationToken = default)
+    {
+        var deleteTaskCommand = new DeleteTaskCommand { Id = taskId };
+        return await _mediator.Send(deleteTaskCommand, cancellationToken);
     }
 }

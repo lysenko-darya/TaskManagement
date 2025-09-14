@@ -13,15 +13,22 @@ internal class TaskConfiguration : IEntityTypeConfiguration<TaskEntity>
         builder.HasKey(e => e.Id);
         builder
             .Property(x => x.Author)
-            .HasMaxLength(100);
+            .HasMaxLength(DataSchemaConstants.USER_NAME_LENGTH);
         builder
             .Property(x => x.Executor)
-            .HasMaxLength(100);
+            .HasMaxLength(DataSchemaConstants.USER_NAME_LENGTH);
 
-        //builder
-        //    .HasOne(t => t.Device)
-        //    .WithMany(b => b.Channels)
-        //    .HasForeignKey(t => t.DeviceId);
+        builder
+            .HasMany(t => t.SubTasks)
+            .WithOne()
+            .HasForeignKey("ParentTaskId");
+
+        builder
+            .HasMany(t => t.RelatedTasks)
+            .WithMany()
+            .UsingEntity<TaskRelation>(
+                configureRight => configureRight.HasOne<TaskEntity>().WithMany().HasForeignKey(e => e.RelatedTaskId),
+                configureLeft => configureLeft.HasOne<TaskEntity>().WithMany().HasForeignKey(e => e.TaskId));
     }
 }
 
