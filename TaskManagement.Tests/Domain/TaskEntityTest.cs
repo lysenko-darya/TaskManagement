@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using TaskManagement.Contracts.Enums;
 using TaskManagement.Domain.Entities;
+using TaskManagement.Domain.Enums;
 using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Tests.Domain;

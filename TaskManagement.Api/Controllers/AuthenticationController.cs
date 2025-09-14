@@ -24,7 +24,6 @@ public class AuthenticationController(IMediator mediator) : ControllerBase
     [HttpPost("Login")]
     public async Task<ActionResult<string>> Login(LoginCommand creds, CancellationToken cancellationToken = default)
     {
-        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         return await _mediator.Send(creds, cancellationToken);
     }
 }

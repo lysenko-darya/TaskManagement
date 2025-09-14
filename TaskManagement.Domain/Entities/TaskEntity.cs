@@ -1,4 +1,4 @@
-﻿using TaskManagement.Contracts.Enums;
+﻿using TaskManagement.Domain.Enums;
 using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Domain.Entities;

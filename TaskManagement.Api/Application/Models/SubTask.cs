@@ -1,4 +1,4 @@
-﻿using TaskManagement.Contracts.Enums;
+﻿using TaskManagement.Domain.Enums;
 
 namespace TaskManagement.Api.Application.Models;
 

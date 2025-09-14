@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Contracts.Enums;
+﻿namespace TaskManagement.Domain.Enums;
 
 public enum Priority
 {

@@ -7,8 +7,4 @@
     <NoWarn>$(NoWarn);1591;</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TaskManagement.Contracts\TaskManagement.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>
