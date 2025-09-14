@@ -13,7 +13,7 @@ public class TaskQueries(TaskManagementDbContext dbContext) : ITaskQueries
             .Include(t => t.RelatedTasks)
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken)
-            ?? throw new NotFoundException();     
+            ?? throw new NotFoundException();
 
         return new TaskModel
         {

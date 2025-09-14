@@ -22,7 +22,7 @@ internal class TaskRepository(TaskManagementDbContext dbContext) : ITaskReposito
     public async Task Add(TaskEntity task, CancellationToken cancellationToken = default)
     {
         _dbContext.Tasks.Add(task);
-       await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Update(TaskEntity task, CancellationToken cancellationToken = default)

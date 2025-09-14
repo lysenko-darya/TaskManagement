@@ -21,7 +21,7 @@ public class AddTasksRelationCommandHandler(ITaskRepository taskRepository,
 
         await _taskRepository.Update(currentTask, cancellationToken);
 
-        _logger.LogInformation("Relation from Task with Id: '{Id}' to Task with Id: '{RelatedTaskId}' was saved", 
+        _logger.LogInformation("Relation from Task with Id: '{Id}' to Task with Id: '{RelatedTaskId}' was saved",
             message.TaskId, message.RelatedTaskId);
         return true;
     }

@@ -1,8 +1,5 @@
 ﻿using MediatR;
-using System.Threading.Tasks;
-using TaskManagement.Api.Application.Models;
 using TaskManagement.Domain.Abstractions;
-using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Exceptions;
 
 namespace TaskManagement.Api.Application.Commands;
@@ -11,11 +8,11 @@ internal class AddSubTaskCommandHandler(ITaskRepository taskRepository,
                                      ILogger<AddSubTaskCommandHandler> logger,
                                      IAuthenticationService authenticationService) : IRequestHandler<AddSubTaskCommand, bool>
 {
-    private readonly ITaskRepository _taskRepository = taskRepository 
+    private readonly ITaskRepository _taskRepository = taskRepository
         ?? throw new ArgumentNullException(nameof(taskRepository));
-    private readonly IAuthenticationService _authenticationService = authenticationService 
+    private readonly IAuthenticationService _authenticationService = authenticationService
         ?? throw new ArgumentNullException(nameof(authenticationService));
-    private readonly ILogger<AddSubTaskCommandHandler> _logger = logger 
+    private readonly ILogger<AddSubTaskCommandHandler> _logger = logger
         ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task<bool> Handle(AddSubTaskCommand message, CancellationToken cancellationToken)
